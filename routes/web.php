@@ -38,6 +38,7 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::resource('pembayaran', PembayaranController::class);
     Route::resource('penjualan', PenjualanController::class);
     Route::get('/penjualan-bulanan', [PenjualanController::class, 'penjualanBulanan'])->name('penjualan.bulanan');
+    Route::get('/produk/status/{id}/{status}', [ProdukController::class, 'status'])->name('produk.status');
 });
 Route::middleware([LoginMiddleware::class])->group(function () {
     Route::put('/transaksi/{id}', [TransaksiController::class, 'transaksi'])->name('transaksi.update');

@@ -47,15 +47,17 @@
                                         title="Update">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('produk.destroy', $item->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" title="Delete"
-                                            onclick="return confirm('Are you sure you want to delete this product?')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    @if ($item->status == 2)
+                                        <a href="{{ route('produk.status', [$item->id, 1]) }}" class="btn btn-danger btn-sm"
+                                            title="Status 2">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                        </a>
+                                    @elseif ($item->status == 1)
+                                        <a href="{{ route('produk.status', [$item->id, 2]) }}"
+                                            class="btn btn-success btn-sm" title="Status 1">
+                                            <i class="fas fa-check-circle"></i>
+                                        </a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

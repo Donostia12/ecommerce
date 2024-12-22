@@ -4,6 +4,11 @@
     <div id="floating-button" class="btn btn-danger position-fixed bottom-0 end-0 m-4 d-none" onclick="printSelected()">
         Cetak
     </div>
+    @if (count($transaksi) == 0)
+        <div class="container text-center my-5">
+            <h4>Anda belum melakukan pesanan</h4>
+        </div>
+    @endif
     @foreach ($transaksi as $data)
         <div class="container my-5">
             <div class="card shadow-sm p-4">

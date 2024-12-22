@@ -12,12 +12,11 @@ class IndexController extends Controller
     public function index()
     {
         // Ambil 8 produk secara acak untuk rekomendasi
-        $recomment = Produk::inRandomOrder()->take(8)->get();
+        $recomment = Produk::where('status', '!=', 2)->inRandomOrder()->take(8)->get();
 
-        // Ambil semua data produk lainnya
-        $data = Produk::all();
+        $data = Produk::where('status', '!=', 2)->get();
 
-        return view('home.index', compact('recomment', 'data'));
+        return view('home.Index', compact('recomment', 'data'));
     }
 
     public function detail($id)

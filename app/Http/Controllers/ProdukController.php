@@ -66,6 +66,14 @@ class ProdukController extends Controller
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
+    public function status($id, $status)
+    {
+        $produk = Produk::find($id);
+        $produk->status = $status;
+        $produk->save();
+
+        return redirect()->route('produk.index')->with('success', 'Status produk berhasil diperbarui.');
+    }
 
     /**
      * Display the specified resource.
@@ -80,7 +88,7 @@ class ProdukController extends Controller
 
         $produk = Produk::findOrFail($id);
 
-        return view('admin.produk-edit', compact('produk'));
+        return view('admin.Produk-edit', compact('produk'));
     }
     /**
      * Update the specified resource in storage.

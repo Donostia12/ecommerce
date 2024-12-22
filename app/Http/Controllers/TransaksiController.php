@@ -99,7 +99,7 @@ class TransaksiController extends Controller
         }
 
         // Mengambil data transaksi berdasarkan id_user
-        return view('home.transaksi', compact('transaksi'));
+        return view('home.transaksi_selesai', compact('transaksi'));
     }
 
     public function transaksi(Request $request, $id)

@@ -158,21 +158,32 @@
         transform: translateX(-10%);
         z-index: 1000;
     }
-
-    /* Remove toggle functionality on desktop */
-    .nav-link.dropdown-toggle::after {
-        display: none;
-    }
 }
 
-/* Hide hover effect on mobile and use click to open dropdown */
 @media (max-width: 767.98px) {
-    /* Adjust dropdown width to fit mobile screen */
+    /* Hapus efek hover di perangkat mobile */
     .dropdown-menu {
+        display: none; /* Default sembunyi */
+    }
+
+    .dropdown.show .dropdown-menu {
+        display: block; /* Tampilkan jika dropdown memiliki class 'show' */
         width: 100%;
         max-width: none;
         right: 0;
         left: 0;
         transform: none;
+    }
+}
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: fixed !important;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 300px;
+        z-index: 1050;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 }

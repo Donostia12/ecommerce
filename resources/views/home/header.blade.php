@@ -35,16 +35,14 @@
                 </form>
 
                 <ul class="navbar-nav ms-auto">
-
                     @if (Auth::user())
                         <li class="nav-item">
                             <a class="nav-link position-relative" href="{{ route('transaksi.index') }}">
                                 <i class="fas fa-shopping-cart"></i>
-                                <!-- Badge Notification -->
                                 <span
                                     class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger"
                                     style="font-size: 0.75rem;">
-                                    {{ $jumlahItem ?? 0 }}<!-- Ubah angka ini sesuai jumlah item atau notifikasi -->
+                                    {{ $jumlahItem ?? 0 }}
                                     <span class="visually-hidden">unread messages</span>
                                 </span>
                             </a>
@@ -80,13 +78,11 @@
                                         <i class="fas fa-shopping-cart"></i> Pembelian
                                     </a>
                                     <a class="dropdown-item" href="{{ route('transaksi.index.selesai') }}">
-
-                                        <i class="fas fa-check-circle text-success"></i> riwayat
+                                        <i class="fas fa-check-circle text-success"></i> Riwayat
                                     </a>
                                     <a class="dropdown-item" href="{{ route('home.setting') }}">
                                         <i class="fas fa-cog"></i> Pengaturan
                                     </a>
-
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
