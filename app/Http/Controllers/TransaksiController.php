@@ -226,8 +226,8 @@ class TransaksiController extends Controller
                 $status = "Pesanan Selesai";
             }
             $data[] = [
-                'name' => $produk->name,
-                'pembeli' => $user->name,
+                'name' => $produk->name ?? "tidak diketahui",
+                'pembeli' => $user->name ?? "tidak diketahui",
                 'jumlah' => $item->amount,
                 'status' => $status,
                 'tgltransaksi' => $item->created_at

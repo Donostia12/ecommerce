@@ -23,8 +23,8 @@
                     style="width: 100px; height: auto; object-fit: contain;">
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" onclick="toggleNavbar()" aria-controls="navbarContent"
+                aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarContent">
@@ -58,12 +58,12 @@
                     @auth
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" id="profileDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                                onclick="toggleDropdown()" aria-expanded="false">
                                 {{ Auth::user()->username }}
                             </a>
 
                             <!-- Profile Dropdown Menu -->
-                            <ul class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="profileDropdown">
+                            <ul class="dropdown-menu p-3" aria-labelledby="profileDropdown" id="dropdownMenu">
                                 <li class="text-center mb-3">
                                     <img src="{{ asset(Auth::user()->profile_photo_url ?? 'image/default_profile.jpeg') }}"
                                         alt="Profile Photo" class="profile-photo">
@@ -113,6 +113,65 @@
 
         /* Display dropdown on hover for desktop */
     </style>
+    <script>
+        function toggleNavbar() {
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const navbarContent = document.querySelector('#navbarContent');
+
+            // Dapatkan nilai aria-expanded saat ini
+            const isExpanded = navbarToggler.getAttribute('aria-expanded') === 'true';
+
+            // Toggle class dan atribut aria-expanded
+            if (isExpanded) {
+                navbarContent.classList.remove('show'); // Hapus class 'show'
+                navbarToggler.setAttribute('aria-expanded', 'false');
+            } else {
+                navbarContent.classList.add('show'); // Tambahkan class 'show'
+                navbarToggler.setAttribute('aria-expanded', 'true');
+            }
+        }
+    </script>
+    <script>
+        // Fungsi untuk toggle dropdown (buka/ tutup)
+        function toggleDropdown() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const isExpanded = dropdownMenu.classList.contains('show');
+
+            // Jika dropdown sudah terbuka, tutup dropdown
+            if (isExpanded) {
+                closeDropdown();
+            } else {
+                // Jika dropdown tertutup, buka dropdown
+                openDropdown();
+            }
+        }
+
+        // Fungsi untuk membuka dropdown
+        function openDropdown() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            dropdownMenu.classList.add('show'); // Menambahkan kelas 'show' untuk menampilkan dropdown
+            dropdownMenu.setAttribute('aria-expanded', 'true');
+        }
+
+        // Fungsi untuk menutup dropdown
+        function closeDropdown() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            dropdownMenu.classList.remove('show'); // Menghapus kelas 'show' untuk menyembunyikan dropdown
+            dropdownMenu.setAttribute('aria-expanded', 'false');
+        }
+
+        // Menutup dropdown ketika pengguna mengklik di luar area dropdown
+        document.addEventListener('click', function(event) {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const dropdownToggle = document.getElementById('profileDropdown');
+
+            if (!dropdownMenu.contains(event.target) && !dropdownToggle.contains(event.target)) {
+                closeDropdown();
+            }
+        });
+    </script>
+
+
 
 
     @yield('content')

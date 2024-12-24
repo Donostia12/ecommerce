@@ -9,6 +9,11 @@
             <h4>Anda belum melakukan pesanan</h4>
         </div>
     @endif
+    <style>
+        .select-transaction {
+            transform: scale(1.5);
+        }
+    </style>
     @foreach ($transaksi as $data)
         <div class="container my-5">
             <div class="card shadow-sm p-4">
@@ -100,12 +105,12 @@
                                     value="{{ $data['telp'] }}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="telp" class="form-label">Deskripsi</label>
+                                <label for="telp" class="form-label">Deskripsi (ukuran , atau request dll) "</label>
                                 <input type="text" class="form-control" id="desc" name="desc"
                                     value="{{ $data['desc'] }}" required>
                             </div>
                             <!-- Jenis Bank -->
-
+                            dd
                             <div class="mb-3">
                                 <label for="bank" class="form-label">Jenis Bank</label>
                                 <select class="form-select" id="bank" name="bank" required>
