@@ -110,7 +110,7 @@
                                     value="{{ $data['desc'] }}" required>
                             </div>
                             <!-- Jenis Bank -->
-                            dd
+
                             <div class="mb-3">
                                 <label for="bank" class="form-label">Jenis Bank</label>
                                 <select class="form-select" id="bank" name="bank" required>
