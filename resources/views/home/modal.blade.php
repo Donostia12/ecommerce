@@ -22,7 +22,7 @@
                 <form id="loginForm" method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="mb-3">
-                        <label for="usernameLogin" class="form-label">Username</label>
+                        <label for="usernameLogin" class="form-label">Email</label>
                         <input type="text" class="form-control" id="usernameLogin" name="username" required
                             value="{{ old('username') }}">
                         @error('username')
@@ -92,6 +92,12 @@
                         <input class="form-check-input" type="checkbox" id="switchMode" onclick="toggleMode()">
                     </div>
                 </div>
+
+                <div class="d-flex justify-content-center mt-3">
+                    <a href="{{ route('forget.password') }}">Forgot Password?</a>
+                </div>
+
+                <!-- Forgot Password Modal -->
 
 
             </div>

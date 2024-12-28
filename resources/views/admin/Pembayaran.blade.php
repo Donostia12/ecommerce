@@ -72,6 +72,12 @@
                                             <ul class="list-group">
                                                 <li class="list-group-item"><strong>Nama Produk:</strong>
                                                     {{ $item['nama_produk'] }}</li>
+                                                <li class="list-group-item"><strong>Nama Pembeli:</strong>
+                                                    {{ $item['pembeli'] }}</li>
+                                                <li class="list-group-item"><strong>Alamat :</strong>
+                                                    {{ $item['alamat'] }}</li>
+                                                <li class="list-group-item"><strong>Telpon :</strong>
+                                                    {{ $item['telp'] }}</li>
                                                 <li class="list-group-item"><strong>Pesan Pembeli:</strong>
                                                     {{ $item['desc'] }}</li>
                                                 <li class="list-group-item"><strong>Harga:</strong>
@@ -95,14 +101,22 @@
                                                         hidden>
                                                     <button type="button" class="btn btn-secondary"
                                                         onclick="closeModal('viewModal{{ $loop->index }}')">Tutup</button>
-                                                    <button type="submit" class="btn btn-success">Terima Combo</button>
+                                                    <button type="submit" class="btn btn-success">Terima
+                                                        Pemabayaran</button>
+                                                </form>
+                                                <form method="POST" action="{{ route('transaksi.accept.combo') }}">
+                                                    @csrf
+                                                    <input type="text" name="id_transaksi" value="{{ $item['combo'] }}"
+                                                        hidden>
+                                                    <button type="submit" class="btn btn-danger">Batalkan
+                                                        Pembayaran</button>
                                                 </form>
                                             @else
                                                 <form method="POST" action="{{ route('transaksi.accept', $item['id']) }}">
                                                     @csrf
                                                     <button type="button" class="btn btn-secondary"
                                                         onclick="closeModal('viewModal{{ $loop->index }}')">Tutup</button>
-                                                    <button type="submit" class="btn btn-success">Terima</button>
+                                                    <button type="submit" class="btn btn-success">Terima Pembaran</button>
                                                 </form>
                                             @endif
                                         </div>

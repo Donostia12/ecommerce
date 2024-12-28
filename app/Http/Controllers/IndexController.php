@@ -69,6 +69,8 @@ class IndexController extends Controller
 
         return redirect()->back()->with('success', 'Kata sandi berhasil diperbarui.');
     }
+
+
     //ket di pembayaran 
     //ganti password
 }

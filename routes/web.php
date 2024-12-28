@@ -29,9 +29,14 @@ Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi
 Route::get('/transaksi_selesai', [TransaksiController::class, 'index_selesai'])->name('transaksi.index.selesai');
 Route::get('/search-products', [IndexController::class, 'search'])->name('index.search');
 Route::get('/verify/{id}', [UserController::class, 'verify'])->name('verify.user');
+Route::get('/forget-password/{id}', [UserController::class, 'forget_password_user'])->name('forget.user');
+Route::post('/reset-password-user/{id}', [UserController::class, 'reset_password_user'])->name('reset.password.user');
+Route::get('forget-password', [UserController::class, 'forget_password'])->name('forget.password');
+Route::post('/reset-password', [UserController::class, 'reset_password'])->name('reset.password');
 Route::middleware([AdminMiddleware::class])->group(function () {
     Route::post('/transaksi-accept/{id}', [TransaksiController::class, 'accept'])->name('transaksi.accept');
     Route::post('/transaksi-accept-combo', [TransaksiController::class, 'accept_combo'])->name('transaksi.accept.combo');
+    Route::post('/transaksi-reject-combo', [TransaksiController::class, 'reject_combo'])->name('transaksi.reject.combo');
     Route::get('/transaksi_index', [TransaksiController::class, 'index_transaksi'])->name('transaksi.admin.index');
     Route::resource('produk', ProdukController::class);
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');

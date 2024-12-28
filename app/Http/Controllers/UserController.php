@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\HaloMail;
+use App\Mail\ResetPassword;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class UserController extends Controller
         ]);
 
         $credentials = [
-            'Username' => $request->username,
+            'Email' => $request->username,
             'password' => $request->password,
         ];
 
@@ -56,10 +57,8 @@ class UserController extends Controller
             return redirect()->route('index')->with('success', 'Login berhasil.');
         }
 
-        return back()->withErrors(['loginError' => 'Username atau password tidak sesuai.']);
+        return back()->withErrors(['loginError' => 'Email atau password tidak sesuai.']);
     }
-
-
 
 
     /**
@@ -129,5 +128,52 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('index')->with('success', 'Akun Anda telah berhasil diverifikasi. Silakan login.');
+    }
+    public function forget_password()
+    {
+        return view('home.forget_password');
+    }
+
+    public function reset_password(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            // The 'confirmed' rule ensures password and confirm_password match
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            $verificationLink = route('forget.user', ['id' => $user->id]);
+            Mail::to($user->Email)->send(new ResetPassword($verificationLink));
+            return redirect()->route('forget.password')->with('success', 'Silahkan Check Email Untuk Ganti Password.');
+        } else {
+            return redirect()->route('forget.password')->with('error', 'Akun Dengan Email Tidak Ditemukan.');
+        }
+
+
+        // return redirect()->route('index')->with('success', 'Registrasi berhasil. Silakan cek email Anda untuk verifikasi.');
+    }
+
+    public function forget_password_user($id)
+    {
+
+        return view('home.forget_password_user', ['id' => $id]);
+    }
+
+    public function reset_password_user(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required',
+            'password1' => 'required'
+        ]);
+        if ($request->passowrd != $request->password1) {
+            $user = User::find($id);
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return redirect()->route('index')->with('success', 'Password Berhasil Di Ganti');
+            # code...
+        } else {
+            return redirect()->route('index')->with('error', 'Password Tidak Sesuai');
+        }
     }
 }
