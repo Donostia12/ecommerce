@@ -62,6 +62,9 @@ class PembayaranController extends Controller
                             'id' => $item->id_transaksi,
                             'nama_produk' => $transaksi_name_combined,
                             'amount' => $transaksi_amout_combined,
+                            'pembeli' => $transaksi->penerima,
+                            'alamat' => $transaksi->alamat,
+                            'telp' => $transaksi->telp ?: "kosong",
                             'harga' => $total_harga_semua,
                             'status' => $transaksi->status,
                             'bank' => $item->bank,
@@ -70,10 +73,15 @@ class PembayaranController extends Controller
                             'combo' => $item->combo
                         ];
                     } else {
+
                         // Jika bukan combo, masukkan data biasa
                         $data[] = [
                             'id' => $item->id_transaksi,
                             'nama_produk' => $produk->name,
+
+                            'pembeli' => $transaksi->penerima,
+                            'alamat' => $transaksi->alamat,
+                            'telp' => $transaksi->telp ?: "kosong",
                             'amount' => $transaksi->amount,
                             'harga' => $produk->harga,
                             'status' => $transaksi->status,

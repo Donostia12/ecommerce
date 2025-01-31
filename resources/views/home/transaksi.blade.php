@@ -1,6 +1,7 @@
 @extends('home.header')
 @section('content')
-    <div style="margin-top: 100px"></div>
+    <div style="margin-top: 100px">
+    </div>
     <div id="floating-button" class="btn btn-danger position-fixed bottom-0 end-0 m-4 d-none" onclick="printSelected()">
         Cetak
     </div>
@@ -38,7 +39,16 @@
 
                         <!-- Amount & Total Price -->
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
-                            <span><strong>Jumlah yang Dibeli:</strong> {{ $data['amount'] }}</span>
+                            <span><strong>Jumlah yang Dibeli:</strong> {{ $data['amount'] }} @if ($data['status'] != 2)
+                                    <button type="button" class="btn btn-secondary edit-button"
+                                        data-id="{{ $data['id'] }}" data-bs-toggle="modal"
+                                        data-bs-target="#EditModalAmout{{ $data['id'] }}">
+                                        Ubah Jumlah
+
+                                    </button>
+                                @endif
+                            </span>
+
                             <span class="text-danger font-weight-bold">Total:
                                 Rp{{ number_format($data['total'], 0, ',', '.') }}</span>
                         </div>
@@ -64,17 +74,63 @@
                         <p><strong>Nomor Telepon:</strong> {{ $data['telp'] ?: 'Belum Terisi' }}</p>
 
                         <!-- Edit Button -->
-                        @if ($data['status'] != 1)
-                            <button type="button" class="btn btn-primary edit-button" data-id="{{ $data['id'] }}"
-                                data-bs-toggle="modal" data-bs-target="#editModal{{ $data['id'] }}">
-                                Edit Transaksi
-                            </button>
-                        @endif
+                        <div class="row">
+                            <div class="col-md-4">
+                                @if ($data['status'] != 2)
+                                    <button type="button" class="btn btn-primary edit-button"
+                                        data-id="{{ $data['id'] }}" data-bs-toggle="modal"
+                                        data-bs-target="#editModal{{ $data['id'] }}">
+                                        Edit Transaksi
+                                    </button>
+                                @endif
+                            </div>
+                            <div class="col-md-4">
+                                @if ($data['status'] != 2)
+                                    <form action="{{ route('transaksi.reject.user') }}" method="POST">
+                                        @csrf
+                                        @method('POST')
+                                        <input type="text" name="id_transaksi_1" value="{{ $data['id'] }}" hidden>
+                                        <button type="submit" class="btn btn-danger">
+                                            Batalkan Transaksi
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="EditModalAmout{{ $data['id'] }}" tabindex="-1" aria-labelledby="editModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
 
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Transaksi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{{ route('transaksi.update.transaksi') }}"
+                            enctype="multipart/form-data">
+                            @csrf
+                            @method('POST')
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Update Jumlah Transaksi</label>
+                                <input type="text" name="id_transaksi" value="{{ $data['id'] }}" hidden>
+                                <input type="number" class="form-control" name="harga" value="{{ $data['harga'] }}"
+                                    required hidden>
+                                <input type="number" class="form-control" id="alamat" name="amount"
+                                    value="{{ $data['amount'] }}" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <!-- Modal -->
         <div class="modal fade" id="editModal{{ $data['id'] }}" tabindex="-1" aria-labelledby="editModalLabel"
             aria-hidden="true">
@@ -105,7 +161,8 @@
                                     value="{{ $data['telp'] }}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="telp" class="form-label">Deskripsi (ukuran , atau request dll) "</label>
+                                <label for="telp" class="form-label">Deskripsi (ukuran , atau request dll)
+                                    "</label>
                                 <input type="text" class="form-control" id="desc" name="desc"
                                     value="{{ $data['desc'] }}" required>
                             </div>
@@ -113,16 +170,16 @@
 
                             <div class="mb-3">
                                 <label for="bank" class="form-label">Jenis Bank</label>
-                                <select class="form-select" id="bank" name="bank" required>
+                                <select class="form-select" id="bank" name="bank" required
+                                    onchange="copyBankNumber()">
                                     <option selected disabled>Pilih Bank</option>
-                                    <option value="BRI">BRI</option>
-                                    <option value="Mandiri">Mandiri</option>
-                                    <option value="BNI">BNI</option>
-                                    <option value="BCA">BCA</option>
+                                    <option value="BRI" id="98440">BRI 98440 Gede Teddy Suputra</option>
+                                    <option value="Mandiri" id="32412412">Mandiri 32412412 Gede Teddy Suputra</option>
+                                    <option value="BNI" id="242412421">BNI 242412421 Gede Teddy Suputra</option>
+                                    <option value="BCA" id="2142142">BCA 2142142 Gede Teddy Suputra</option>
                                 </select>
                             </div>
 
-                            <!-- Bukti Pembayaran -->
                             <div class="mb-3">
                                 <label for="bukti_pembayaran" class="form-label">Upload Bukti Pembayaran</label>
                                 <input type="file" class="form-control" id="bukti_pembayaran" name="image">
@@ -315,6 +372,38 @@
                 }
             } else {
                 alert('Pilih setidaknya satu item untuk melanjutkan.');
+            }
+        }
+    </script>
+    <script>
+        function copyBankNumber() {
+            // Mendapatkan id dari option yang dipilih
+            var selectedOptionId = document.getElementById("bank").selectedOptions[0].id;
+
+            // Memastikan clipboard API tersedia
+            if (navigator.clipboard) {
+                // Menggunakan Clipboard API untuk menyalin ke clipboard
+                navigator.clipboard.writeText(selectedOptionId).then(function() {
+                    // Menampilkan alert bahwa ID telah disalin
+                    alert("ID Bank " + selectedOptionId + " telah disalin ke clipboard!");
+                }).catch(function(err) {
+                    // Menangani error jika clipboard gagal
+                    console.error('Error copying text: ', err);
+                    alert("Gagal menyalin ID Bank ke clipboard.");
+                });
+            } else {
+                // Jika Clipboard API tidak tersedia, fallback dengan cara lama menggunakan input
+                var tempInput = document.createElement("input");
+                tempInput.value = selectedOptionId;
+                document.body.appendChild(tempInput);
+
+                tempInput.select();
+                document.execCommand("copy");
+
+                document.body.removeChild(tempInput);
+
+                // Menampilkan alert bahwa ID telah disalin
+                alert("ID Bank " + selectedOptionId + " telah disalin ke clipboard!");
             }
         }
     </script>

@@ -74,7 +74,7 @@ class TransaksiController extends Controller
     public function index_selesai()
     {
         $userId = Auth::id(); // Mendapatkan ID pengguna yang sedang login
-        $data = Transaksi::where('id_user', $userId)->where('status', 1)->get();
+        $data = Transaksi::where('id_user', $userId)->where('status', 1)->orWhere('status', 4)->get();
         $transaksi = [];
 
         foreach ($data as $item) {
@@ -218,6 +218,9 @@ class TransaksiController extends Controller
         foreach ($transaksi as $item) {
             $produk = Produk::where('id', $item->id_produk)->first();
             $user = User::where('id', $item->id_user)->first();
+            if ($item->status == 4) {
+                $status = "Dibatalkan";
+            }
             if ($item->status == 3) {
                 $status = "Data Pesanan belum lengkap";
             } elseif ($item->status == 2) {
@@ -285,6 +288,53 @@ class TransaksiController extends Controller
             'bank' => $request->bank,
             'combo' => $request->id_transaksi,
             'image' => $fileName
+        ]);
+
+        return redirect()->back()->with('success', 'Transaksi berhasil diperbarui');
+    }
+
+    public function reject_combo(Request $request)
+    {
+
+        $id_transaksiarray = explode(',', $request->id_transaksi);
+
+        foreach ($id_transaksiarray as $item) {
+            $transaksi =  Transaksi::where('id', $item)->first();
+            $transaksi->update([
+                'status' => "4"
+            ]);
+        }
+        return redirect()->back()->with('success', 'Transaksi berhasil diperbarui');
+    }
+    public function reject_transaksi(Request $request)
+    {
+
+        $transaksi =  Transaksi::where('id', $request->id_transaksi_1)->first();
+
+        $transaksi->update([
+            'status' => "4"
+        ]);
+
+        return redirect()->back()->with('success', 'Transaksi berhasil diperbarui');
+    }
+    public function reject_transaksi_user(Request $request)
+    {
+
+        $transaksi =  Transaksi::where('id', $request->id_transaksi_1)->first();
+
+        $transaksi->update([
+            'status' => "5"
+        ]);
+
+        return redirect()->back()->with('success', 'Transaksi berhasil diHapus');
+    }
+    public function update(Request $request)
+    {
+
+        $transaksi =  Transaksi::where('id', $request->id_transaksi)->first();
+        $transaksi->update([
+            'amount' => $request->amount,
+            'total' => $request->amount * $request->harga
         ]);
 
         return redirect()->back()->with('success', 'Transaksi berhasil diperbarui');

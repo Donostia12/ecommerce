@@ -34,6 +34,7 @@ Route::post('/reset-password-user/{id}', [UserController::class, 'reset_password
 Route::get('forget-password', [UserController::class, 'forget_password'])->name('forget.password');
 Route::post('/reset-password', [UserController::class, 'reset_password'])->name('reset.password');
 Route::middleware([AdminMiddleware::class])->group(function () {
+    Route::post('/transaksi-reject-transaksi', [TransaksiController::class, 'reject_transaksi'])->name('transaksi.reject.transaksi');
     Route::post('/transaksi-accept/{id}', [TransaksiController::class, 'accept'])->name('transaksi.accept');
     Route::post('/transaksi-accept-combo', [TransaksiController::class, 'accept_combo'])->name('transaksi.accept.combo');
     Route::post('/transaksi-reject-combo', [TransaksiController::class, 'reject_combo'])->name('transaksi.reject.combo');
@@ -46,8 +47,10 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('/produk/status/{id}/{status}', [ProdukController::class, 'status'])->name('produk.status');
 });
 Route::middleware([LoginMiddleware::class])->group(function () {
+    Route::post('/transaksi-reject-transaksi-user', [TransaksiController::class, 'reject_transaksi_user'])->name('transaksi.reject.user');
     Route::put('/transaksi/{id}', [TransaksiController::class, 'transaksi'])->name('transaksi.update');
     Route::get('/profil', [IndexController::class, 'profil'])->name('profil');
     Route::get('/setting', [IndexController::class, 'homepassword'])->name('home.setting');
     Route::post('/home', [IndexController::class, 'homegantipassword'])->name('home.gantipass');
+    Route::post('/transaksi-update-transaksi', [TransaksiController::class, 'update'])->name('transaksi.update.transaksi');
 });

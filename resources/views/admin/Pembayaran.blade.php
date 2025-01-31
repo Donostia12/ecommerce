@@ -104,8 +104,9 @@
                                                     <button type="submit" class="btn btn-success">Terima
                                                         Pemabayaran</button>
                                                 </form>
-                                                <form method="POST" action="{{ route('transaksi.accept.combo') }}">
+                                                <form method="POST" action="{{ route('transaksi.reject.combo') }}">
                                                     @csrf
+
                                                     <input type="text" name="id_transaksi" value="{{ $item['combo'] }}"
                                                         hidden>
                                                     <button type="submit" class="btn btn-danger">Batalkan
@@ -117,6 +118,14 @@
                                                     <button type="button" class="btn btn-secondary"
                                                         onclick="closeModal('viewModal{{ $loop->index }}')">Tutup</button>
                                                     <button type="submit" class="btn btn-success">Terima Pembaran</button>
+                                                </form>
+
+                                                <form method="POST" action="{{ route('transaksi.reject.transaksi') }}">
+                                                    @csrf
+                                                    <input type="text" name="id_transaksi_1" value="{{ $item['id'] }}"
+                                                        hidden>
+                                                    <button type="submit" class="btn btn-danger">Batalkan
+                                                        Pembayaran</button>
                                                 </form>
                                             @endif
                                         </div>

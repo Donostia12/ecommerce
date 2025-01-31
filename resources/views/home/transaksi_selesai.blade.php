@@ -29,9 +29,10 @@
                         </div>
 
                         <!-- Status -->
-                        @if ($data['status'] == 3)
+                        @if ($data['status'] == 4)
                             <h4 class="text-danger font-weight-bold">Status :
-                                <span class="text-danger font-weight-bold">Belum di bayar</span>
+                                <span class="text-danger font-weight-bold">Dibatalkan Oleh Admin karna pembayaran tidak
+                                    sesuai</span>
                             @elseif ($data['status'] == 2)
                                 <h4 class="text-warning font-weight-bold">Status :
                                     <span class="text-warning font-weight-bold">Menuggu Diprosess Admin</span>
@@ -49,7 +50,7 @@
                         <p><strong>Nomor Telepon:</strong> {{ $data['telp'] ?: 'Belum Terisi' }}</p>
 
                         <!-- Edit Button -->
-                        @if ($data['status'] != 1)
+                        @if ($data['status'] != 1 && $data['status'] != 4)
                             <button type="button" class="btn btn-primary edit-button" data-id="{{ $data['id'] }}"
                                 data-bs-toggle="modal" data-bs-target="#editModal{{ $data['id'] }}">
                                 Edit Transaksi
